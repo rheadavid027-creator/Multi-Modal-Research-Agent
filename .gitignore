@@ -1,0 +1,80 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python
+_pycache_/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment variables / secrets
+.env
+.env.local
+.env.*.local
+*.key
+secrets.json
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# mypy
+.mypy_cache/
+
+# ChromaDB / vector store data
+chroma_db/
+*.sqlite3
+*.db
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Model / cache files
+*.pkl
+*.h5
+*.pt
+*.pth
+.cache/
+models/
+
+# Node (if frontend present)
+node_modules/
+.next/
+out/
