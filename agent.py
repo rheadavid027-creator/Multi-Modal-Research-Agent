@@ -28,11 +28,21 @@ def collect_raw_data(topic: str) -> str:
     except Exception as e:
         results.append(f"## Web Search Results\nError: {e}")
 
+    def get_first_url(text: str):
+        for line in text.splitlines():
+            if line.strip().startswith("URL:"):
+                return line.split("URL:", 1)[1].strip()
+        return None
+
     try:
-        paper_result = scrape_url.invoke({"query": topic})
-        results.append(f"## Academic Papers (ArXiv)\n{paper_result}")
+        first_url = get_first_url(web_result)
+        if first_url:
+            paper_result = scrape_url.invoke({"url": first_url})
+            results.append(f"## Web Page Analysis\n{paper_result}")
+        else:
+            results.append("## Web Page Analysis\nNo valid URL found to scrape from search results.")
     except Exception as e:
-        results.append(f"## Academic Papers\nError: {e}")
+        results.append(f"## Web Page Analysis\nError: {e}")
 
     return "\n\n".join(results)
 
