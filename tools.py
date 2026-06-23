@@ -5,6 +5,7 @@ from tavily import TavilyClient
 import os 
 from dotenv import load_dotenv
 from rich import print
+from langchain_community.utilities import ArxivAPIWrapper
 load_dotenv()
 
 tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
@@ -34,5 +35,7 @@ def scrape_url(url: str) -> str:
         return soup.get_text(separator=" ", strip=True)[:3000]
     except Exception as e:
         return f"Could not scrape URL: {str(e)}"
+
+
 
 
