@@ -1,15 +1,14 @@
-from tools import web_search , scrape_url
+from agent import run_research_pipeline
+topic = input("Enter research topic: ").strip()
 
-res = web_search.invoke("what do you mean by riya")
+latex = run_research_pipeline(topic)
 
-urls = [line.replace("URL: ", "").strip() 
-        for line in res.split("\n") 
-        if line.startswith("URL:")]
+    # Save to file
+    
+filename = f"{'_'.join(topic.split()[:4])}.tex"
+with open(filename, "w", encoding="utf-8") as f:
+    f.write(latex)
 
-scraped_data = []
-
-for url in urls:
-    scraped_data.append(scrape_url.invoke(url))
-
-# print(res)
-print(scraped_data)
+print(f"\n[bold green]✅ Saved to {filename}[/bold green]")
+print("\n[dim]--- LaTeX Preview (first 500 chars) ---[/dim]")
+print(latex[:500])
