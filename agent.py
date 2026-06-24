@@ -131,29 +131,51 @@ writer_chain = writer_prompt | groq_llm | StrOutputParser()
 # 6. Master Pipeline
 # ──────────────────────────────────────────────
 def run_research_pipeline(topic: str) -> str:
+    # Create Research papers folder
+    os.makedirs("Research papers", exist_ok=True)
+    
     # Step 1: Manually call tools, get raw string data
     print(f"\n[bold cyan]🔧 Step 1: Collecting raw data for '{topic}'...[/bold cyan]")
     raw_data = collect_raw_data(topic)
     print("[green]✓ Tools executed[/green]")
+    
+    # Save raw data
+    raw_data_path = os.path.join("Research papers", f"{topic}_01_raw_data.md")
+    with open(raw_data_path, "w", encoding="utf-8") as f:
+        f.write(raw_data)
+    print(f"[green]✓ Saved raw data to {raw_data_path}[/green]")
 
     # Step 2: Groq summarizes raw data
     print("\n[bold cyan]🔍 Step 2: Researcher (Groq) summarizing...[/bold cyan]")
     research_summary = researcher_chain.invoke({"topic": topic, "raw_data": raw_data})
     print("[green]✓ Research summary done[/green]")
+    
+    # Save research summary
+    research_summary_path = os.path.join("Research papers", f"{topic}_02_research_summary.md")
+    with open(research_summary_path, "w", encoding="utf-8") as f:
+        f.write(research_summary)
+    print(f"[green]✓ Saved research summary to {research_summary_path}[/green]")
 
     # Step 3: Mistral analyses the summary
     print("\n[bold cyan]🧠 Step 3: Analyst (Mistral) analysing...[/bold cyan]")
     analysis = analyst_chain.invoke({"topic": topic, "research_data": research_summary})
     print("[green]✓ Analysis complete[/green]")
+    
+    # Save analysis
+    analysis_path = os.path.join("Research papers", f"{topic}_03_analysis.md")
+    with open(analysis_path, "w", encoding="utf-8") as f:
+        f.write(analysis)
+    print(f"[green]✓ Saved analysis to {analysis_path}[/green]")
 
     # Step 4: Groq writes Markdown paper
     print("\n[bold cyan]📝 Step 4: Writer (Groq) generating Markdown paper...[/bold cyan]")
     md_output = writer_chain.invoke({"topic": topic, "analysis": analysis})
     print("[green]✓ Markdown generation complete[/green]")
 
-    # Save to .md file
-    with open("output_paper.md", "w", encoding="utf-8") as f:
+    # Save final paper
+    output_path = os.path.join("Research papers", f"{topic}_04_final_paper.md")
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(md_output)
-    print("[bold green]✅ Saved to output_paper.md[/bold green]")
+    print(f"[bold green]✅ Saved final paper to {output_path}[/bold green]")
 
     return md_output
